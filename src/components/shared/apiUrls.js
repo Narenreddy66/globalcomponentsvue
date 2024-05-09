@@ -6,5 +6,6 @@ export const apiUrls = {
 };
 export const Doctypes = {
   employee: "Employee",
+  attendencerequest: "Attendance Request",
 };
 export default { apiUrls, Doctypes };

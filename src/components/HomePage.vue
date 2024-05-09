@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-sm navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <h1 class="navbar-brand fs-3" href="#">Navbar</h1>
       <button
         class="navbar-toggler d-lg-none"
         type="button"
@@ -14,7 +14,6 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="collapsibleNavId">
-        <tabs-component></tabs-component>
         <form class="d-flex justify-content-end my-2 my-lg-0">
           <input
             class="form-control me-sm-2"
@@ -32,8 +31,16 @@
       </div>
     </div>
   </nav>
-
-  <router-view></router-view>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-2">
+        <tabs-component></tabs-component>
+      </div>
+      <div class="col-10">
+        <router-view></router-view>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

@@ -7,7 +7,7 @@ const TabRouter = [
   {
     path: "/",
     component: HomePage,
-    redirect: "/homecomp",
+    redirect: "/",
 
     children: [
       {

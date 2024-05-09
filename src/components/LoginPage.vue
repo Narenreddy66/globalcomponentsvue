@@ -26,7 +26,7 @@
 import ButtonComponent from "@/BasicComponents/ButtonComponent.vue";
 import InputComponent from "@/BasicComponents/InputComponent.vue";
 import axiosInstance from "./shared/apiInterceptor";
-import apiUrls from "./shared/apiUrls";
+import { apiUrls } from "./shared/apiUrls";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 

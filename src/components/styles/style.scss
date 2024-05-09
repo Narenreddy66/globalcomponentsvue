@@ -5,6 +5,16 @@
     --normal-color: white;
     --sidebackground: lightgrey;
     --thcolor: lightgrey;
+    --btncolor: black;
+    --btncolor1: lightblue;
+}
+a {
+    background-color: var(--btncolor1);
+    color: var(--btncolor);
+}
+.active-link {
+    background-color: var(--activebtncolor1) !important;
+    color: var(--normal-color);
 }
 // * {
 //     overflow: hidden;

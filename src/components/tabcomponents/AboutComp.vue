@@ -134,7 +134,7 @@
         </tr>
       </tfoot>
     </table>
-    <!-- <div
+    <div
       class="modal fade"
       id="exampleModal"
       tabindex="-1"
@@ -176,19 +176,21 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
 import axiosInstance from "../shared/apiInterceptor";
 import { apiUrls, Doctypes } from "../shared/apiUrls";
-
+// const csrfToken = document
+//   .querySelector('meta[name="csrf-token"]')
+//   .getAttribute("content");
 export default {
   data() {
     return {
       currentPage: 1,
-      itemsPerPage: 7,
+      itemsPerPage: 1,
       Logout: "Logout",
       employeeData: [],
       filters: {
@@ -205,7 +207,6 @@ export default {
   },
   mounted() {
     this.fetchData();
-    console.log(this.employeeData, "employeedata");
   },
   computed: {
     filteredEmployees() {
@@ -247,43 +248,43 @@ export default {
     setPage(pageNumber) {
       this.currentPage = pageNumber;
     },
-    // previewFile(event) {
-    //   const file = event.target.files[0];
-    //   if (file) {
-    //     this.selectedFile = file;
-    //     const reader = new FileReader();
-    //     reader.onload = () => {
-    //       this.previewUrl = reader.result;
-    //     };
-    //     reader.readAsDataURL(file);
-    //   }
-    // },
-    // save() {
-    //   this.closeUploadDialog();
-    // },
+    previewFile(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.selectedFile = file;
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.previewUrl = reader.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    save() {
+      this.closeUploadDialog();
+    },
 
-    // handleFileUpload() {
-    //   this.file = this.$refs.fileInput.files[0];
-    // },
-    // uploadFile() {
-    //   const formData = new FormData();
-    //   formData.append("file", this.file);
+    handleFileUpload() {
+      this.file = this.$refs.fileInput.files[0];
+    },
+    uploadFile() {
+      const formData = new FormData();
+      formData.append("file", this.file);
 
-    //   axiosInstance
-    //     .post("/upload", formData, {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     })
-    //     .then((response) => {
-    //       console.log(response.data);
-    //       alert("File uploaded successfully!");
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error:", error);
-    //       alert("An error occurred while uploading the file");
-    //     });
-    // },
+      axiosInstance
+        .post("/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          alert("File uploaded successfully!");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred while uploading the file");
+        });
+    },
     fetchData() {
       let queryParams = { filters: [] };
       queryParams.fields = JSON.stringify(["*"]);
@@ -291,10 +292,14 @@ export default {
       axiosInstance
         .get(apiUrls.resource + "/" + Doctypes.employee, {
           params: queryParams,
+          // headers: {
+          //   "X-CSRFToken": csrfToken,
+          // },
         })
         .then((res) => {
           console.log(res);
           this.employeeData = res.data;
+          console.log(this.employeeData, "naren");
         });
     },
   },
