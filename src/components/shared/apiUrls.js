@@ -1,6 +1,10 @@
 const domain = "/api";
-const apiUrls = {
+export const apiUrls = {
   login: domain + "/method/login",
   logout: domain + "/method/logout",
+  resource: domain + "/resource",
 };
-export default apiUrls;
+export const Doctypes = {
+  employee: "Employee",
+};
+export default { apiUrls, Doctypes };

@@ -6,6 +6,7 @@
       :type="type"
       :placeholder="`Enter ${label}`"
       v-model="inputValue"
+      :max="maxDate"
     /><br />
   </div>
 </template>
@@ -30,6 +31,7 @@ export default {
   data() {
     return {
       inputValue: this.modelValue,
+      maxDate: new Date().toISOString().split("T")[0],
     };
   },
   watch: {

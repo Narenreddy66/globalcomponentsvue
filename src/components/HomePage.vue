@@ -14,32 +14,8 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="collapsibleNavId">
-        <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" href="#" aria-current="page"
-              >Home <span class="visually-hidden">(current)</span></a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="dropdownId"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              >Dropdown</a
-            >
-            <div class="dropdown-menu" aria-labelledby="dropdownId">
-              <a class="dropdown-item" href="#">Action 1</a>
-              <a class="dropdown-item" href="#">Action 2</a>
-            </div>
-          </li>
-        </ul>
-        <form class="d-flex my-2 my-lg-0">
+        <tabs-component></tabs-component>
+        <form class="d-flex justify-content-end my-2 my-lg-0">
           <input
             class="form-control me-sm-2"
             type="text"
@@ -57,57 +33,22 @@
     </div>
   </nav>
 
-  <div class="row">
-    <div class="col-3">
-      <button
-        class="bg-danger text-white rounded-3 border-0 p-2 gap-4"
-        v-for="item in tabItems"
-        :key="item.title"
-        :tab="item.title"
-        :to="item.route"
-      >
-        <component :is="item.icon" class="h-5 w-5" />
-        <div>{{ item.title }}</div>
-      </button>
-      <input-component
-        type="Date"
-        :label="enterdate"
-        v-model="selectedDate"
-        :max="maxDate"
-        name="Date"
-      ></input-component>
-      <router-view></router-view>
-    </div>
-  </div>
+  <router-view></router-view>
 </template>
+
 <script>
-import InputComponent from "@/BasicComponents/InputComponent.vue";
 import { toast } from "vue3-toastify";
+import TabsComponent from "@/BasicComponents/TabsComponent.vue";
 
 export default {
-  components: { InputComponent },
+  components: { TabsComponent },
   data() {
     return {
-      selectedDate: "",
-      tabItems: [
-        {
-          title: "Home",
-          route: "/homecomp",
-        },
-        {
-          title: "About",
-          route: "/about",
-        },
-        {
-          title: "Help",
-          route: "/help",
-        },
-        {
-          title: "Contact",
-          route: "/contact",
-        },
-      ],
+      // maxDate: new Date().toISOString().split("T")[0],
     };
+  },
+  mounted() {
+    console.log(this.selectedDate, "selecteddtae");
   },
   methods: {
     logOut() {
@@ -118,16 +59,9 @@ export default {
       this.$router.push({ name: "LoginPage" });
     },
   },
-  computed: {
-    maxDate() {
-      const currentDate = new Date();
-
-      const maxYear = currentDate.getFullYear();
-      const maxMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
-      const maxDay = String(currentDate.getDate()).padStart(2, "0");
-      return `${maxYear}-${maxMonth}-${maxDay}`;
-    },
-  },
+  // dateChange() {
+  //   console.log(this.selectedDate);
+  // },
 };
 </script>
 

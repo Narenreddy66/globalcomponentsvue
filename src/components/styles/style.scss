@@ -6,3 +6,23 @@
     --sidebackground: lightgrey;
     --thcolor: lightgrey;
 }
+// * {
+//     overflow: hidden;
+//     background-image: url("https://www.shutterstock.com/shutterstock/photos/1842730648/display_1500/stock-vector-blue-river-ocean-wave-layer-vector-background-illustration-1842730648.jpg");
+//     background-repeat: repeat-x;
+//     position: absolute;
+//     top: 0px;
+//     width: 6400px;
+//     height: 198px;
+//     animation: wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+//     transform: translate3d(0, 0, 0);
+// }
+// @keyframes wave {
+//     0% {
+//         margin-left: 0;
+//     }
+
+//     100% {
+//         margin-left: -1600px;
+//     }
+// }
