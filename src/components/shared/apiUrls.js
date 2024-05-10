@@ -7,5 +7,6 @@ export const apiUrls = {
 export const Doctypes = {
   employee: "Employee",
   attendencerequest: "Attendance Request",
+  attendenceupload: "Upload Attendance",
 };
 export default { apiUrls, Doctypes };

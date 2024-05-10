@@ -255,7 +255,7 @@ const formData = new FormData();
 formData.append("file", selectedFile.value);
 
 axiosInstance
-  .post("/upload", formData, {
+  .post(apiUrls.resource + "/" + Doctypes.attendenceupload, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -285,7 +285,7 @@ const fetchData = () => {
       console.error("Error fetching data:", error);
     });
 };
-// Call fetchData on component mount
+
 onMounted(() => {
   fetchData();
 });

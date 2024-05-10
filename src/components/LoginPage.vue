@@ -22,48 +22,40 @@
     </div>
   </div>
 </template>
-<script>
+<script setup>
 import ButtonComponent from "@/BasicComponents/ButtonComponent.vue";
 import InputComponent from "@/BasicComponents/InputComponent.vue";
 import axiosInstance from "./shared/apiInterceptor";
 import { apiUrls } from "./shared/apiUrls";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+import { ref } from "vue";
+import router from "@/router";
+const btnname = ref("Login");
+const formData = ref({
+  usr: "",
+  pwd: "",
+});
 
-export default {
-  components: {
-    ButtonComponent,
-    InputComponent,
-  },
-  data() {
-    return {
-      btnname: "Login",
-      formData: { usr: "", pwd: "" },
-    };
-  },
-  mounted() {},
-  methods: {
-    submitForm() {
-      console.log(this.formData);
+function submitForm() {
+  console.log(formData.value);
 
-      axiosInstance
-        .post(apiUrls.login, this.formData)
-        .then((response) => {
-          console.log(response.data, "response");
+  axiosInstance
+    .post(apiUrls.login, formData.value)
+    .then((response) => {
+      console.log(response.data, "response");
 
-          localStorage.setItem("user", JSON.stringify(this.formData));
-          toast.success("Login Successful", {
-            position: "top-right",
-          });
-          setTimeout(() => {
-            this.$router.push({ name: "HomePage" });
-          }, 1000);
-        })
-        .catch((error) => {
-          console.error(error);
-          toast.error("An error occurred. Please try again later.");
-        });
-    },
-  },
-};
+      localStorage.setItem("user", JSON.stringify(formData.value));
+      toast.success("Login Successful", {
+        position: "top-right",
+      });
+      setTimeout(() => {
+        router.push({ name: "HomePage" });
+      }, 1000);
+    })
+    .catch((error) => {
+      console.error(error);
+      toast.error("An error occurred. Please try again later.");
+    });
+}
 </script>
