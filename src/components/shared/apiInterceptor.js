@@ -7,6 +7,14 @@ const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(
   (config) => {
     config.withCredentials = true;
+
+    config.params = {
+      ...config.params,
+      filters: [],
+      fields: JSON.stringify(["*"]),
+      limit_page_length: "none",
+    };
+
     return config;
   },
   (error) => {
@@ -37,10 +45,8 @@ axiosInstance.interceptors.response.use(
           toast.error("An error occurred. Please try again later.");
       }
     } else if (error.request) {
-      // The request was made but no response was received
       toast.error("No response received from the server.");
     } else {
-      // Something happened in setting up the request that triggered an error
       toast.error(
         "Request failed to be sent. Please check your internet connection."
       );

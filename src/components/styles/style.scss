@@ -8,6 +8,11 @@
     --btncolor: black;
     --btncolor1: lightblue;
 }
+.btn {
+    background-color: var(--btncolor1) !important;
+    border: none;
+    color: var(--btncolor) !important;
+}
 a {
     background-color: var(--btncolor1);
     color: var(--btncolor);
@@ -15,6 +20,10 @@ a {
 .active-link {
     background-color: var(--activebtncolor1) !important;
     color: var(--normal-color);
+}
+.table {
+    width: 100% !important;
+    border-radius: 10px;
 }
 // * {
 //     overflow: hidden;

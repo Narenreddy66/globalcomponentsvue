@@ -180,131 +180,118 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, reactive, computed, onMounted } from "vue";
 import axiosInstance from "../shared/apiInterceptor";
 import { apiUrls, Doctypes } from "../shared/apiUrls";
-// const csrfToken = document
-//   .querySelector('meta[name="csrf-token"]')
-//   .getAttribute("content");
-export default {
-  data() {
-    return {
-      currentPage: 1,
-      itemsPerPage: 1,
-      Logout: "Logout",
-      employeeData: [],
-      filters: {
-        name: "",
-        email: "",
-        idNo: "",
-        status: "",
-        dateOfJoining: "",
-        mobileNo: "",
-      },
-      selectedFile: null,
-      previewUrl: null,
-    };
-  },
-  mounted() {
-    this.fetchData();
-  },
-  computed: {
-    filteredEmployees() {
-      return this.employeeData.filter((employee) => {
-        return (
-          employee.employee_name
-            .toLowerCase()
-            .includes(this.filters.name.toLowerCase()) &&
-          employee.personal_email
-            .toLowerCase()
-            .includes(this.filters.email.toLowerCase()) &&
-          employee.name.toString().includes(this.filters.idNo) &&
-          // employee.docstatus.toLowerCase().includes(this.filters.status.toLowerCase()) &&
-          employee.date_of_joining.includes(this.filters.dateOfJoining) &&
-          employee.cell_number.includes(this.filters.mobileNo)
-        );
-      });
-    },
 
-    totalPages() {
-      return Math.ceil(this.filteredEmployees.length / this.itemsPerPage);
-    },
+const currentPage = ref(1);
+const itemsPerPage = ref(2);
+const employeeData = ref([]);
+const selectedFile = ref(null);
+const previewUrl = ref(null);
+const filters = reactive({
+  name: "",
+  email: "",
+  idNo: "",
+  status: "",
+  dateOfJoining: "",
+  mobileNo: "",
+});
 
-    startIndex() {
-      return (this.currentPage - 1) * this.itemsPerPage;
-    },
-    endIndex() {
-      return Math.min(
-        this.startIndex + this.itemsPerPage - 1,
-        this.filteredEmployees.length - 1
-      );
-    },
+const filteredEmployees = computed(() => {
+  return employeeData.value.filter((employee) => {
+    return (
+      employee.employee_name
+        .toLowerCase()
+        .includes(filters.name.toLowerCase()) &&
+      employee.personal_email
+        .toLowerCase()
+        .includes(filters.email.toLowerCase()) &&
+      employee.name.toString().includes(filters.idNo) &&
+      employee.status.toLowerCase().includes(filters.status.toLowerCase()) &&
+      employee.date_of_joining.includes(filters.dateOfJoining) &&
+      employee.cell_number.includes(filters.mobileNo)
+    );
+  });
+});
 
-    paginatedData() {
-      return this.filteredEmployees.slice(this.startIndex, this.endIndex + 1);
-    },
-  },
-  methods: {
-    setPage(pageNumber) {
-      this.currentPage = pageNumber;
-    },
-    previewFile(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.selectedFile = file;
-        const reader = new FileReader();
-        reader.onload = () => {
-          this.previewUrl = reader.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    },
-    save() {
-      this.closeUploadDialog();
-    },
+const totalPages = computed(() => {
+  return Math.ceil(filteredEmployees.value.length / itemsPerPage.value);
+});
 
-    handleFileUpload() {
-      this.file = this.$refs.fileInput.files[0];
-    },
-    uploadFile() {
-      const formData = new FormData();
-      formData.append("file", this.file);
+const startIndex = computed(() => {
+  return (currentPage.value - 1) * itemsPerPage.value;
+});
 
-      axiosInstance
-        .post("/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
-          alert("File uploaded successfully!");
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert("An error occurred while uploading the file");
-        });
-    },
-    fetchData() {
-      let queryParams = { filters: [] };
-      queryParams.fields = JSON.stringify(["*"]);
-      queryParams.limit_page_length = "none";
-      axiosInstance
-        .get(apiUrls.resource + "/" + Doctypes.employee, {
-          params: queryParams,
-          // headers: {
-          //   "X-CSRFToken": csrfToken,
-          // },
-        })
-        .then((res) => {
-          console.log(res);
-          this.employeeData = res.data;
-          console.log(this.employeeData, "naren");
-        });
-    },
-  },
+const endIndex = computed(() => {
+  return Math.min(
+    startIndex.value + itemsPerPage.value - 1,
+    filteredEmployees.value.length - 1
+  );
+});
+
+const paginatedData = computed(() => {
+  return filteredEmployees.value.slice(startIndex.value, endIndex.value + 1);
+});
+
+const setPage = (pageNumber) => {
+  currentPage.value = pageNumber;
 };
+
+const previewFile = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    selectedFile.value = file;
+    const reader = new FileReader();
+    reader.onload = () => {
+      previewUrl.value = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+const formData = new FormData();
+formData.append("file", selectedFile.value);
+
+axiosInstance
+  .post("/upload", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  })
+  .then((response) => {
+    console.log(response.data);
+    alert("File uploaded successfully!");
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+    // alert("An error occurred while uploading the file");
+  });
+
+const fetchData = () => {
+  let queryParams = { filters: [] };
+  queryParams.fields = JSON.stringify(["*"]);
+  queryParams.limit_page_length = "none";
+  axiosInstance
+    .get(apiUrls.resource + "/" + Doctypes.employee, {
+      params: queryParams,
+    })
+    .then((res) => {
+      console.log(res);
+      employeeData.value = res.data;
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+};
+// Call fetchData on component mount
+onMounted(() => {
+  fetchData();
+});
 </script>
+
+
 
 <style scoped>
 .table {
